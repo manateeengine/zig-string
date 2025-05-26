@@ -9,6 +9,6 @@ pub fn build(b: *std.Build) !void {
     hello_world_example_exe.install();
     try hello_world_example_exe.addRunStep();
 
-    const tests_exe = build_module.TestsExe.init(b, &zig_string_module);
+    const tests_exe = build_module.TestsExe.init(b, &build_config, &zig_string_module);
     tests_exe.addRunStep();
 }
