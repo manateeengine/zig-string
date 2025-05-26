@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "manateeengine.code-spell-checker-zig",
+    "streetsidesoftware.code-spell-checker",
+    "ziglang.vscode-zig",
+  ]
+}
