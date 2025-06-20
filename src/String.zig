@@ -15,6 +15,7 @@
 //! remember to benchmark your code!
 
 const std = @import("std");
+const StringIterator = @import("StringIterator.zig");
 
 const String = @This();
 
@@ -69,6 +70,16 @@ pub fn deinit(self: *String) void {
     self.* = undefined;
 }
 
+/// Gets the String's value as an ArrayList.
+///
+/// ## Example
+/// ```zig
+/// const my_string_value = my_string.asStringLiteral();
+/// ```
+pub fn asArrayList(self: *String) std.ArrayList(u8) {
+    return self.string_buffer;
+}
+
 /// Gets the String's value as a string literal.
 ///
 /// ## Example
@@ -120,6 +131,19 @@ pub fn charAt(self: *String, index: isize) ?u8 {
     return self.string_buffer.items.ptr[@intCast(clamped_index)];
 }
 
+/// Clears all characters from the String, setting its length and capacity to 0.
+///
+/// ## Example
+/// ```zig
+/// my_string.clear();
+/// ```
+///
+/// ## Remarks
+/// Clearing a String does not de-initialize the String, however de-initializing clears the String.
+pub fn clear(self: *String) void {
+    self.string_buffer.clearAndFree();
+}
+
 /// Determines whether the String matches the provided string literal.
 ///
 /// ## Example
@@ -158,6 +182,24 @@ pub fn contains(self: *String, search: []const u8) bool {
 /// ```
 pub fn containsString(self: *String, search: *String) bool {
     return self.contains(search.asStringLiteral());
+}
+
+/// Removes all characters within the given range.
+///
+/// ## Example
+/// ```zig
+/// try my_string.drain();
+/// ```
+pub fn drain(self: *String, range: usize) !void {
+    const initial_length = self.length();
+    if (range > initial_length) {
+        return;
+    }
+
+    self.string_buffer.items = self.string_buffer.items[range..initial_length];
+
+    const new_length = initial_length - range;
+    try self.string_buffer.resize(new_length);
 }
 
 /// Determines whether the String ends with the provided string literal.
@@ -244,6 +286,76 @@ pub fn findString(self: *String, search: *String, position: isize) ?usize {
     return self.find(search.asStringLiteral(), position);
 }
 
+/// Inserts the provided string literal into the String at the provided index.
+///
+/// ## Example
+/// ```zig
+/// try my_string.insert(5 "there ");
+/// ```
+pub fn insert(self: *String, index: usize, value: []const u8) !void {
+    try self.string_buffer.insertSlice(index, value);
+}
+
+/// Inserts the provided character into the String at the provided index.
+///
+/// ## Example
+/// ```zig
+/// try my_string.insert(11 '!');
+/// ```
+pub fn insertChar(self: *String, index: usize, value: u8) !void {
+    try self.string_buffer.insert(index, value);
+}
+
+/// Inserts the provided String into the String at the provided index.
+///
+/// ## Example
+/// ```zig
+/// try my_string.insertString(5 &my_other_string);
+/// ```
+pub fn insertString(self: *String, index: usize, value: *String) !void {
+    try self.insert(index, value.asStringLiteral());
+}
+
+/// Determines whether the String is valid ASCII.
+///
+/// ## Example
+/// ```zig
+/// const is_ascii = my_string.isAscii();
+/// ```
+pub fn isAscii(self: *String) bool {
+    var is_ascii = true;
+    for (self.string_buffer.items) |char| {
+        if (!std.ascii.isAscii(char)) {
+            is_ascii = false;
+            break;
+        }
+    }
+    return is_ascii;
+}
+
+/// Determines whether the String is empty.
+///
+/// ## Example
+/// ```zig
+/// const is_empty = my_string.isEmpty();
+/// ```
+pub fn isEmpty(self: *String) bool {
+    return self.length() > 0;
+}
+
+/// Gets an iterator for the string.
+///
+/// ## Example
+/// ```zig
+/// const my_string_iterator = my_string.iterator();
+/// ```
+pub fn iterator(self: *String) StringIterator {
+    return .{
+        .index = 0,
+        .string = self,
+    };
+}
+
 /// Gets the length of the String.
 ///
 /// ## Example
@@ -252,6 +364,28 @@ pub fn findString(self: *String, search: *String, position: isize) ?usize {
 /// ```
 pub fn length(self: *String) usize {
     return self.string_buffer.items.len;
+}
+
+/// Creates an `ArrayList` of Strings delimited by the newline character.
+///
+/// ## Example
+/// ```zig
+/// const my_lines = try my_string.lines();
+///
+/// // Remember to de-initialize!
+/// defer my_lines.deinit();
+///
+/// defer for (my_lines.items) |*line| {
+///     line.deinit();
+/// };
+/// ```
+///
+/// ## Remarks
+/// To prevent memory leaks, the `ArrayList` created with this method **must** be de-initialized.
+/// This can be done by calling `deinit()` on the resulting `ArrayList`. Remember to de-initialize
+/// each String within the `ArrayList` as well. See the above example for complete usage.
+pub fn lines(self: *String) !std.ArrayList(String) {
+    return try self.split("\n");
 }
 
 /// Resizes the String to the provided length, filling any empty space after the String's value
@@ -341,6 +475,46 @@ pub fn padStartString(self: *String, target_length: usize, value: *String) !void
     try self.padStart(target_length, value.asStringLiteral());
 }
 
+/// Removes the last character from the String and returns it.
+///
+/// ## Example
+/// ```zig
+/// const popped_char = my_string.pop();
+/// ```
+pub fn pop(self: *String) ?u8 {
+    return self.string_buffer.pop();
+}
+
+/// Appends the provided string literal into the String.
+///
+/// ## Example
+/// ```zig
+/// try my_string.push(' Welcome!');
+/// ```
+pub fn push(self: *String, value: []const u8) !void {
+    try self.string_buffer.appendSlice(value);
+}
+
+/// Appends the provided character into the String.
+///
+/// ## Example
+/// ```zig
+/// try my_string.pushChar('!');
+/// ```
+pub fn pushChar(self: *String, value: u8) !void {
+    try self.string_buffer.append(value);
+}
+
+/// Appends the provided String into the String.
+///
+/// ## Example
+/// ```zig
+/// try my_string.pushString(&my_other_string);
+/// ```
+pub fn pushString(self: *String, value: *String) !void {
+    try self.push(value.asStringLiteral());
+}
+
 /// Updates the String's value, duplicating it by the provided count.
 ///
 /// ## Example
@@ -383,6 +557,19 @@ pub fn replaceAll(self: *String, search: []const u8, replacement: []const u8) !u
 /// ```
 pub fn replaceAllString(self: *String, search: *String, replacement: *String) !usize {
     return try self.replaceAll(search.asStringLiteral(), replacement.asStringLiteral());
+}
+
+/// Removes the character at the provided index.
+///
+/// ## Example
+/// ```zig
+/// try my_string.remove(11);
+/// ```
+pub fn removeChar(self: *String, index: usize) ?u8 {
+    if (index >= self.length()) {
+        return null;
+    }
+    return self.string_buffer.orderedRemove(index);
 }
 
 /// Creates an `ArrayList` of Strings delimited by the provided string literal.
@@ -512,11 +699,7 @@ pub fn toUpperCase(self: *String) void {
 /// try my_string.trim();
 /// ```
 pub fn trim(self: *String) !void {
-    const trimmed_value = std.mem.trim(u8, self.asStringLiteral(), &[_]u8{' '});
-    for (trimmed_value, 0..trimmed_value.len) |char, idx| {
-        self.string_buffer.items[idx] = char;
-    }
-    try self.string_buffer.resize(trimmed_value.len);
+    try self.trimMatches(" ");
 }
 
 /// Removes all white space from the end of the String.
@@ -526,11 +709,7 @@ pub fn trim(self: *String) !void {
 /// try my_string.trimEnd();
 /// ```
 pub fn trimEnd(self: *String) !void {
-    const trimmed_value = std.mem.trimEnd(u8, self.asStringLiteral(), &[_]u8{' '});
-    for (trimmed_value, 0..trimmed_value.len) |char, idx| {
-        self.string_buffer.items[idx] = char;
-    }
-    try self.string_buffer.resize(trimmed_value.len);
+    try self.trimMatchesEnd(" ");
 }
 
 /// Removes all white space from the start of the String.
@@ -540,7 +719,45 @@ pub fn trimEnd(self: *String) !void {
 /// try my_string.trimStart();
 /// ```
 pub fn trimStart(self: *String) !void {
-    const trimmed_value = std.mem.trimStart(u8, self.asStringLiteral(), &[_]u8{' '});
+    try self.trimMatchesStart(" ");
+}
+
+/// Removes characters matching the provided pattern from both sides of the String.
+///
+/// ## Example
+/// ```zig
+/// try my_string.trimMatches("He!");
+/// ```
+pub fn trimMatches(self: *String, pattern: []const u8) !void {
+    const trimmed_value = std.mem.trim(u8, self.asStringLiteral(), pattern);
+    for (trimmed_value, 0..trimmed_value.len) |char, idx| {
+        self.string_buffer.items[idx] = char;
+    }
+    try self.string_buffer.resize(trimmed_value.len);
+}
+
+/// Removes characters matching the provided pattern from the end of the String.
+///
+/// ## Example
+/// ```zig
+/// try my_string.trimMatchesEnd("!");
+/// ```
+pub fn trimMatchesEnd(self: *String, pattern: []const u8) !void {
+    const trimmed_value = std.mem.trimEnd(u8, self.asStringLiteral(), pattern);
+    for (trimmed_value, 0..trimmed_value.len) |char, idx| {
+        self.string_buffer.items[idx] = char;
+    }
+    try self.string_buffer.resize(trimmed_value.len);
+}
+
+/// Removes characters matching the provided pattern from the start of the String.
+///
+/// ## Example
+/// ```zig
+/// try my_string.trimMatchesStart("He");
+/// ```
+pub fn trimMatchesStart(self: *String, pattern: []const u8) !void {
+    const trimmed_value = std.mem.trimStart(u8, self.asStringLiteral(), pattern);
     for (trimmed_value, 0..trimmed_value.len) |char, idx| {
         self.string_buffer.items[idx] = char;
     }
@@ -574,6 +791,15 @@ test deinit {
     try std.testing.expect(std.testing.allocator_instance.detectLeaks() == false);
 }
 
+test asArrayList {
+    // It should return an ArrayList representing the string's internal buffer's value
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    const array_list = my_string.asArrayList();
+    try std.testing.expect(my_string.compare(array_list.items));
+}
+
 test asStringLiteral {
     // It should return a string literal representing the string's internal buffer's value
     var my_string = try String.init(std.testing.allocator, "foo");
@@ -605,6 +831,16 @@ test charAt {
     // It should return null if the index is out of bounds
     try std.testing.expect(my_string.charAt(4) == null);
     try std.testing.expect(my_string.charAt(-4) == null);
+}
+
+test clear {
+    // It should clear all chars from the string, setting its length and capacity to 0
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    my_string.clear();
+    try std.testing.expect(my_string.length() == 0);
+    try std.testing.expect(my_string.capacity() == 0);
 }
 
 test compare {
@@ -661,6 +897,14 @@ test containsString {
 
     // It should return false if String is not found within the String's value
     try std.testing.expect(my_string.containsString(&third_string) == false);
+}
+
+test drain {
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    try my_string.drain(1);
+    try std.testing.expect(my_string.compare("oo"));
 }
 
 test endsWith {
@@ -756,11 +1000,96 @@ test findLastString {
     try std.testing.expect(my_string.findLastString(&second_string) == null);
 }
 
+test insert {
+    // It should insert the provided string literal at the provided index
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    try my_string.insert(3, "_bar");
+    try std.testing.expect(my_string.compare("foo_bar"));
+}
+
+test insertChar {
+    // It should insert the provided character at the provided index
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    try my_string.insertChar(3, '!');
+    try std.testing.expect(my_string.compare("foo!"));
+}
+
+test insertString {
+    // It should insert the provided String at the provided index
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    var my_other_string = try String.init(std.testing.allocator, "_bar");
+    defer my_other_string.deinit();
+
+    try my_string.insertString(3, &my_other_string);
+    try std.testing.expect(my_string.compare("foo_bar"));
+}
+
+test isAscii {
+    // It should return true if the string contains only valid ASCII
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+    try std.testing.expect(my_string.isAscii());
+
+    // It should return false if the string contains invalid ASCII
+    var my_invalid_string = try String.init(std.testing.allocator, "Foo with a 🚀");
+    defer my_invalid_string.deinit();
+    try std.testing.expect(my_invalid_string.isAscii() == false);
+}
+
+test isEmpty {
+    // It should return true if the string is empty
+    var my_empty_string = try String.init(std.testing.allocator, "");
+    defer my_empty_string.deinit();
+    try std.testing.expect(my_empty_string.isEmpty() == false);
+
+    // It should return false if the string is not empty
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+    try std.testing.expect(my_string.isEmpty());
+}
+
+test iterator {
+    // It should return a StringIterator for the current String
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    var my_iterator = my_string.iterator();
+    try std.testing.expect(std.mem.eql(u8, my_iterator.first(), "f"));
+}
+
 test length {
     // It should return the string's internal buffer's length
     var my_string = try String.init(std.testing.allocator, "foo");
     defer my_string.deinit();
     try std.testing.expect(my_string.length() == 3);
+}
+
+test lines {
+    // It should return an ArrayList with an item for each line in the String.
+    const multiline_string_literal =
+        \\This is line 1
+        \\This is line 2
+        \\This is line 3
+    ;
+    var my_string = try String.init(std.testing.allocator, multiline_string_literal);
+    defer my_string.deinit();
+
+    var my_lines = try my_string.lines();
+    defer my_lines.deinit();
+    defer for (my_lines.items) |*line| {
+        line.deinit();
+    };
+
+    try std.testing.expect(my_lines.items.len == 3);
+    try std.testing.expect(my_lines.items[0].compare("This is line 1"));
+    try std.testing.expect(my_lines.items[1].compare("This is line 2"));
+    try std.testing.expect(my_lines.items[2].compare("This is line 3"));
 }
 
 test padEnd {
@@ -799,6 +1128,60 @@ test padStartString {
 
     try my_string.padStartString(11, &first_string);
     try std.testing.expect(my_string.compare("bar_bar_foo"));
+}
+
+test pop {
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    const last_char = my_string.pop();
+    try std.testing.expect(my_string.compare("fo"));
+    try std.testing.expect(last_char == 'o');
+}
+
+test push {
+    // It should insert the provided string literal at the provided index
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    try my_string.push("_bar");
+    try std.testing.expect(my_string.compare("foo_bar"));
+}
+
+test pushChar {
+    // It should insert the provided character at the provided index
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    try my_string.pushChar('!');
+    try std.testing.expect(my_string.compare("foo!"));
+}
+
+test pushString {
+    // It should insert the provided String at the provided index
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    var my_other_string = try String.init(std.testing.allocator, "_bar");
+    defer my_other_string.deinit();
+
+    try my_string.pushString(&my_other_string);
+    try std.testing.expect(my_string.compare("foo_bar"));
+}
+
+test removeChar {
+    var my_string = try String.init(std.testing.allocator, "foo");
+    defer my_string.deinit();
+
+    // It should return the removed char if index is within bounds
+    const removed_char = my_string.removeChar(2);
+    try std.testing.expect(my_string.compare("fo"));
+    try std.testing.expect(removed_char == 'o');
+
+    // It should return null if index is not within bounds
+    const another_removed_char = my_string.removeChar(2);
+    try std.testing.expect(my_string.compare("fo"));
+    try std.testing.expect(another_removed_char == null);
 }
 
 test repeat {
@@ -958,6 +1341,36 @@ test trimStart {
 
     // It should remove all white space from the beginning of the string
     try my_string.trimStart();
+    try std.testing.expect(my_string.compare("foo"));
+    try std.testing.expect(my_string.length() == 3);
+}
+
+test trimMatches {
+    var my_string = try String.init(std.testing.allocator, "111121foo121111");
+    defer my_string.deinit();
+
+    // It should remove all characters matching the provided pattern from both sides of the String
+    try my_string.trimMatches("12");
+    try std.testing.expect(my_string.compare("foo"));
+    try std.testing.expect(my_string.length() == 3);
+}
+
+test trimMatchesEnd {
+    var my_string = try String.init(std.testing.allocator, "foo121111");
+    defer my_string.deinit();
+
+    // It should remove all characters matching the provided pattern from the end of the String
+    try my_string.trimMatchesEnd("12");
+    try std.testing.expect(my_string.compare("foo"));
+    try std.testing.expect(my_string.length() == 3);
+}
+
+test trimMatchesStart {
+    var my_string = try String.init(std.testing.allocator, "121111foo");
+    defer my_string.deinit();
+
+    // It should remove all characters matching the provided pattern from the start of the String
+    try my_string.trimMatchesStart("12");
     try std.testing.expect(my_string.compare("foo"));
     try std.testing.expect(my_string.length() == 3);
 }

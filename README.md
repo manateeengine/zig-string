@@ -110,6 +110,10 @@ matrix, as we consider them irrelevant.
 
 ### Rust `std::string`
 
+Note: There are some methods that I've marked "Not necessary in Zig". These may be false positives,
+as I'm fairly new to the world of Rust. Feel free to open an issue if any false positives are found
+and I'll be happy to look into them further!
+
 | Method                   | Status | zig-string Equivalent            | Notes                                                       |
 | ------------------------ | ------ | -------------------------------- | ----------------------------------------------------------- |
 | `as_ascii`               | 🟢     | `asStringLiteral`                |                                                             |
@@ -119,14 +123,14 @@ matrix, as we consider them irrelevant.
 | `as_mut_vec`             | 🚫     |                                  | Not necessary in Zig                                        |
 | `as_ptr`                 | 🚫     |                                  | Not necessary in Zig                                        |
 | `as_str`                 | 🟢     | `asStringLiteral`                |                                                             |
-| `bytes`                  | 🔴     |                                  |                                                             |
+| `bytes`                  | 🟢     | `iterator`                       |                                                             |
 | `capacity`               | 🟢     | `capacity`                       |                                                             |
 | `ceil_char_boundary`     | 🔴     |                                  |                                                             |
-| `char_indices`           | 🔴     |                                  |                                                             |
-| `chars`                  | 🔴     |                                  |                                                             |
-| `clear`                  | 🔴     |                                  |                                                             |
+| `char_indices`           | 🟢     | `iterator`                       |                                                             |
+| `chars`                  | 🟢     | `iterator`                       |                                                             |
+| `clear`                  | 🟢     | `clear`                          |                                                             |
 | `contains`               | 🟢     | `contains`, `containsString`     |                                                             |
-| `drain`                  | 🔴     |                                  |                                                             |
+| `drain`                  | 🟢     | `drain`                          |                                                             |
 | `encode_utf16`           | 🔴     |                                  |                                                             |
 | `ends_with`              | 🟢     | `endsWith`, `endsWithString`     |                                                             |
 | `eq_ignore_ascii_case`   | 🔴     |                                  |                                                             |
@@ -151,28 +155,28 @@ matrix, as we consider them irrelevant.
 | `get_mut`                | 🚫     |                                  | Not necessary in Zig                                        |
 | `get_unchecked`          | 🚫     |                                  | Not necessary in Zig                                        |
 | `get_unchecked_mut`      | 🚫     |                                  | Not necessary in Zig                                        |
-| `insert`                 | 🔴     |                                  |                                                             |
-| `insert_str`             | 🔴     |                                  |                                                             |
+| `insert`                 | 🟢     | `insertChar`                     |                                                             |
+| `insert_str`             | 🟢     | `insert`, `insertString`         |                                                             |
 | `into_boxed_str`         | 🚫     |                                  | Not necessary in Zig                                        |
-| `into_bytes`             | 🔴     |                                  |                                                             |
-| `into_chars`             | 🔴     |                                  |                                                             |
+| `into_bytes`             | 🟢     | `asArrayList`                    |                                                             |
+| `into_chars`             | 🟢     | `asArrayList`                    |                                                             |
 | `into_raw_parts`         | 🚫     |                                  | Not necessary since we're not implementing `from_raw_parts` |
-| `is_ascii`               | 🔴     |                                  |                                                             |
+| `is_ascii`               | 🟢     | `isAscii`                        |                                                             |
 | `is_char_boundary`       | 🔴     |                                  |                                                             |
-| `is_empty`               | 🔴     |                                  |                                                             |
+| `is_empty`               | 🟢     | `isEmpty`                        |                                                             |
 | `leak`                   | 🚫     |                                  | Not necessary in Zig                                        |
 | `len`                    | 🟢     | `length`                         |                                                             |
-| `lines`                  | 🔴     |                                  |                                                             |
+| `lines`                  | 🟢     | `lines`                          |                                                             |
 | `make_ascii_lowercase`   | 🟢     | `toLowerCase`                    |                                                             |
 | `make_ascii_uppercase`   | 🟢     | `toUpperCase`                    |                                                             |
 | `match_indices`          | 🔴     |                                  |                                                             |
 | `matches`                | 🔴     |                                  |                                                             |
 | `new`                    | 🟢     | `init`                           |                                                             |
 | `parse`                  | 🔴     |                                  |                                                             |
-| `pop`                    | 🔴     |                                  |                                                             |
-| `push`                   | 🔴     |                                  |                                                             |
-| `push_str`               | 🔴     |                                  |                                                             |
-| `remove`                 | 🔴     |                                  |                                                             |
+| `pop`                    | 🟢     | `pop`                            |                                                             |
+| `push`                   | 🟢     | `pushChar`                       |                                                             |
+| `push_str`               | 🟢     | `push`, `pushString`             |                                                             |
+| `remove`                 | 🟢     | `removeChar`                     |                                                             |
 | `remove_matches`         | 🔴     |                                  |                                                             |
 | `repeat`                 | 🟢     | `repeat`, `repeatAllString`      |                                                             |
 | `replace`                | 🟢     | `replaceAll`, `replaceAllString` |                                                             |
@@ -202,26 +206,26 @@ matrix, as we consider them irrelevant.
 | `split_terminator`       | 🔴     |                                  |                                                             |
 | `split_whitespace`       | 🔴     |                                  |                                                             |
 | `splitn`                 | 🔴     |                                  |                                                             |
-| `starts_with`            | 🔴     |                                  |                                                             |
-| `strip_prefix`           | 🔴     |                                  |                                                             |
-| `strip_suffix`           | 🔴     |                                  |                                                             |
+| `starts_with`            | 🟢     | `startsWith`, `startsWithString` |                                                             |
+| `strip_prefix`           | 🟡     | `trimMatchesStart`               |                                                             |
+| `strip_suffix`           | 🟡     | `trimMatchesEnd`                 |                                                             |
 | `substr_range`           | 🔴     |                                  |                                                             |
 | `to_ascii_lowercase`     | 🟡     | `toLowerCase`                    | Method mutates string                                       |
 | `to_ascii_uppercase`     | 🟡     | `toUpperCase`                    | Method mutates string                                       |
 | `to_lowercase`           | 🟡     | `toLowerCase`                    | Method mutates string                                       |
 | `to_uppercase`           | 🟡     | `toUpperCase`                    | Method mutates string                                       |
 | `trim`                   | 🟢     | `trim`                           |                                                             |
-| `trim_ascii`             | 🔴     | `trim`                           |                                                             |
+| `trim_ascii`             | 🟢     | `trim`                           |                                                             |
 | `trim_ascii_end`         | 🟢     | `trimEnd`                        |                                                             |
 | `trim_ascii_start`       | 🟢     | `trimStart`                      |                                                             |
 | `trim_end`               | 🟢     | `trimEnd`                        |                                                             |
-| `trim_end_matches`       | 🔴     |                                  |                                                             |
-| `trim_matches`           | 🔴     |                                  |                                                             |
+| `trim_end_matches`       | 🟢     | `trimMatchesEnd`                 |                                                             |
+| `trim_matches`           | 🟢     | `trimMatches`                    |                                                             |
 | `trim_start`             | 🟢     | `trimStart`                      |                                                             |
-| `trim_start_matches`     | 🔴     |                                  |                                                             |
-| `truncate`               | 🔴     |                                  |                                                             |
-| `try_reserve`            | 🔴     |                                  |                                                             |
-| `try_reserve_exact`      | 🔴     |                                  |                                                             |
+| `trim_start_matches`     | 🟢     | `trimMatchesStart`               |                                                             |
+| `truncate`               | 🟢     | `truncate`                       |                                                             |
+| `try_reserve`            | 🚫     |                                  | Not necessary in Zig                                        |
+| `try_reserve_exact`      | 🚫     |                                  | Not necessary in Zig                                        |
 | `try_with_capacity`      | 🚫     |                                  | Not necessary in Zig                                        |
 | `with_capacity`          | 🟢     | `initFromCapacity`               |                                                             |
 
