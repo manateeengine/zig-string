@@ -1,0 +1,22 @@
+{
+  "cSpell.words": [
+    "ghostty"
+  ],
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "zig.buildOnSave": true,
+  "zig.zls.enableBuildOnSave": true,
+  "zig.formattingProvider": "extension",
+  "[zig]": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.inlayHints.enabled": "offUnlessPressed",
+    "editor.suggest.insertMode": "replace",
+    "editor.stickyScroll.defaultModel": "foldingProviderModel",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "never",
+    },
+  },
+}
