@@ -229,14 +229,6 @@ and I'll be happy to look into them further!
 | `try_with_capacity`      | 🚫     |                                  | Not necessary in Zig                                        |
 | `with_capacity`          | 🟢     | `initFromCapacity`               |                                                             |
 
-## Contributing
-
-Check out our [Contribution Guide](./CONTRIBUTING.md) for information about getting involved in the
-development of Zig String.
-
-As a contributor, you can help us keep this project's community open and inclusive. Please read and
-follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
-
 ## Support
 
 While we don't provide any sort of support contracts / BAAs for our open source software (yet),
@@ -256,3 +248,16 @@ appreciate if you could do any of the following:
 - Sponsor the Manatee Software Foundation on GitHub
 
 Every little bit helps, thank you for supporting us!
+
+## Contributing
+
+Check out our [Contribution Guide](./CONTRIBUTING.md) for information about getting involved in the
+development of Zig String.
+
+As a contributor, you can help us keep this project's community open and inclusive. Please read and
+follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
+## Security
+
+Check out our [Security Policy](./SECURITY.md) for more information about reporting vulnerabilities
+and handling security bugs.
