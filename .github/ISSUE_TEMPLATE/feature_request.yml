@@ -1,0 +1,25 @@
+name: Feature Request
+description: Suggest a new feature, enhancement, or idea to improve the package
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for submitting an idea. It helps make Bun better.
+
+        If you need help or support using this package and are not requesting a feature, please
+        visit the GitHub Discussions page. If you're reporting broken functionality, please create
+        a bug report instead.
+  - type: textarea
+    attributes:
+      label: What is the problem this feature would solve?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What is the feature you are proposing to solve the problem?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What alternatives have you considered?

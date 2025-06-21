@@ -229,6 +229,15 @@ and I'll be happy to look into them further!
 | `try_with_capacity`      | 🚫     |                                  | Not necessary in Zig                                        |
 | `with_capacity`          | 🟢     | `initFromCapacity`               |                                                             |
 
+## Roadmap
+
+See the [Open Issues](https://github.com/manateeengine/zig-string/issues) for a list of proposed
+features (and known issues).
+
+- [Top Feature Requests](https://github.com/manateeengine/zig-string/issues?q=label%3Aenhancement%20is%3Aopen%20sort%3Areactions-desc)
+- [Top Bugs](https://github.com/manateeengine/zig-string/issues?q=label%3Abug%20open%20sort%3Areactions-desc)
+- [Newest Bugs](https://github.com/manateeengine/zig-string/issues?q=label%3Abug%20open%20sort%3Acreated-desc)
+
 ## Support
 
 While we don't provide any sort of support contracts / BAAs for our open source software (yet),

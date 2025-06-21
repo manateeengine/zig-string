@@ -1,0 +1,55 @@
+name: Bug Report
+description: Report an issue that needs to be fixed
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for submitting a bug report, it helps make our software better!
+
+        If you need help or support using this package and are not reporting a bug, please visit
+        the GitHub Discussions page. If you're reporting a missing feature, please create a feature
+        request instead.
+
+        If this bug is a security vulnerability, please see the security policy for reporting
+        instructions.
+
+        Before reporting, make sure you've installed the latest version of the package and are
+        running the latest nightly build of Zig, as the bug may have already been fixed. Remember
+        to include as much information as possible to help us reproduce and fix the bug!
+  - type: input
+    attributes:
+      label: What version of Zig is running?
+      description: Copy the output of `zig version`
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: What's your system information?
+      description: |
+        For MacOS and Linux: copy the output of `uname -mprs`
+        For Windows: copy the output of `"$([Environment]::OSVersion | ForEach-Object VersionString) $(if ([Environment]::Is64BitOperatingSystem) { "x64" } else { "x86" })"` in the PowerShell console
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What did you expect to happen?
+      description: If possible, please provide a copy of the Zig compiler / runtime error message.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What actually happened?
+      description: If possible, please provide a copy of the Zig compiler / runtime error message.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What are the reproduction steps?
+      description: Please provide a step-by-step guide as to how we can reproduce this bug.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: Is there anything else you think we should know?
