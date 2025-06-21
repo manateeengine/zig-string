@@ -257,6 +257,12 @@ development of Zig String.
 As a contributor, you can help us keep this project's community open and inclusive. Please read and
 follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
+## Authors and Contributors
+
+This project was created by [James Kienle](https://github.com/jrkienle). Key maintainers can be
+found in the [Code Owners File](./.github/CODEOWNERS). For a complete list of contributors, check
+out the [Contributors Page](https://github.com/manateeengine/zig-string/graphs/contributors).
+
 ## Security
 
 Check out our [Security Policy](./SECURITY.md) for more information about reporting vulnerabilities
