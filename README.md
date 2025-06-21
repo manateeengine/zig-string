@@ -261,3 +261,8 @@ follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 Check out our [Security Policy](./SECURITY.md) for more information about reporting vulnerabilities
 and handling security bugs.
+
+## License
+
+This project is licensed under the MIT License. Check out [LICENSE.md](./LICENSE.md) for more
+information.
