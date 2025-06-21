@@ -229,6 +229,15 @@ and I'll be happy to look into them further!
 | `try_with_capacity`      | 🚫     |                                  | Not necessary in Zig                                        |
 | `with_capacity`          | 🟢     | `initFromCapacity`               |                                                             |
 
+## Roadmap
+
+See the [Open Issues](https://github.com/manateeengine/zig-string/issues) for a list of proposed
+features (and known issues).
+
+- [Top Feature Requests](https://github.com/manateeengine/zig-string/issues?q=label%3Aenhancement%20is%3Aopen%20sort%3Areactions-desc)
+- [Top Bugs](https://github.com/manateeengine/zig-string/issues?q=label%3Abug%20open%20sort%3Areactions-desc)
+- [Newest Bugs](https://github.com/manateeengine/zig-string/issues?q=label%3Abug%20open%20sort%3Acreated-desc)
+
 ## Support
 
 While we don't provide any sort of support contracts / BAAs for our open source software (yet),
@@ -238,13 +247,37 @@ feel free to reach out to the maintainers at one of the following places:
 - [GitHub Issues](https://github.com/manateeengine/zig-string/issues)
 - Contact options listed in the [Manatee GitHub Profile](https://github.com/manateeengine)
 
-## Project Assistance
+## Supporting the Development of Zig String (and Other Manatee Projects)
 
-If you want to support the active development of `zig-string` (or to just show some love), we'd
-really appreciate if you could do any of the following:
+If you want to support the active development of `zig-string` (or just show some love), we'd really
+appreciate if you could do any of the following:
 
 - Add a GitHub star to the repo
 - Share the project with other developers
 - Sponsor the Manatee Software Foundation on GitHub
 
 Every little bit helps, thank you for supporting us!
+
+## Contributing
+
+Check out our [Contribution Guide](./CONTRIBUTING.md) for information about getting involved in the
+development of Zig String.
+
+As a contributor, you can help us keep this project's community open and inclusive. Please read and
+follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
+## Authors and Contributors
+
+This project was created by [James Kienle](https://github.com/jrkienle). Key maintainers can be
+found in the [Code Owners File](./.github/CODEOWNERS). For a complete list of contributors, check
+out the [Contributors Page](https://github.com/manateeengine/zig-string/graphs/contributors).
+
+## Security
+
+Check out our [Security Policy](./SECURITY.md) for more information about reporting vulnerabilities
+and handling security bugs.
+
+## License
+
+This project is licensed under the MIT License. Check out [LICENSE.md](./LICENSE.md) for more
+information.
