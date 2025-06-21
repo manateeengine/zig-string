@@ -231,7 +231,10 @@ and I'll be happy to look into them further!
 
 ## Contributing
 
-As a contributor, you can help us keep the Manatee community open and inclusive. Please read and
+Check out our [Contribution Guide](./CONTRIBUTING.md) for information about getting involved in the
+development of Zig String.
+
+As a contributor, you can help us keep this project's community open and inclusive. Please read and
 follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Support
@@ -243,10 +246,10 @@ feel free to reach out to the maintainers at one of the following places:
 - [GitHub Issues](https://github.com/manateeengine/zig-string/issues)
 - Contact options listed in the [Manatee GitHub Profile](https://github.com/manateeengine)
 
-## Project Assistance
+## Supporting the Development of Zig String (and Other Manatee Projects)
 
-If you want to support the active development of `zig-string` (or to just show some love), we'd
-really appreciate if you could do any of the following:
+If you want to support the active development of `zig-string` (or just show some love), we'd really
+appreciate if you could do any of the following:
 
 - Add a GitHub star to the repo
 - Share the project with other developers
