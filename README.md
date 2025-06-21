@@ -229,6 +229,11 @@ and I'll be happy to look into them further!
 | `try_with_capacity`      | 🚫     |                                  | Not necessary in Zig                                        |
 | `with_capacity`          | 🟢     | `initFromCapacity`               |                                                             |
 
+## Contributing
+
+As a contributor, you can help us keep the Manatee community open and inclusive. Please read and
+follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
 ## Support
 
 While we don't provide any sort of support contracts / BAAs for our open source software (yet),
