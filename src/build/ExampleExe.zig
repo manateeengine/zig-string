@@ -8,6 +8,12 @@ const ExampleExe = @This();
 
 /// The executable for all zig-string examples.
 exe: *std.Build.Step.Compile,
+/// A special, non-installed copy of the example to be used with the "check" step.
+///
+/// ## Remarks
+/// This is used by the ZLS "Build on Save" functionality to get better in-editor visibility into
+/// compilation errors. For more information, see https://zigtools.org/zls/guides/build-on-save.
+exe_check: *std.Build.Step.Compile,
 /// The install step for the zig-string examples executable.
 install_step: *std.Build.Step.InstallArtifact,
 /// The name of the example to build. This should be 1:1 with a file name in the `examples` dir
@@ -26,17 +32,25 @@ pub fn init(b: *std.Build, build_config: *const BuildConfig, module: *const ZigS
         .target = build_config.target,
     });
     examples_exe.root_module.addImport("string", module.module);
+    const examples_exe_check = b.addExecutable(.{
+        .name = name,
+        .optimize = build_config.optimize,
+        .root_source_file = b.path(b.pathJoin(&.{ "examples", name, "main.zig" })),
+        .target = build_config.target,
+    });
+    examples_exe_check.root_module.addImport("string", module.module);
 
     const examples_install_step = b.addInstallArtifact(examples_exe, .{});
 
     return ExampleExe{
         .exe = examples_exe,
+        .exe_check = examples_exe_check,
         .install_step = examples_install_step,
         .name = name,
     };
 }
 
-/// Adds a build command and step, allowing the exe to be run via "zig build run-example".
+/// Adds a build command and step, allowing the exe to be run via "zig build example".
 pub fn addRunStep(self: *const ExampleExe) !void {
     const b = self.exe.step.owner;
     const run_examples_cmd = b.addRunArtifact(self.exe);
@@ -51,6 +65,11 @@ pub fn addRunStep(self: *const ExampleExe) !void {
 
     const run_example_step = b.step(step_name, step_description);
     run_example_step.dependOn(&run_examples_cmd.step);
+}
+
+/// Adds the example's check step as a dependency to the build system's check step
+pub fn addToCheckStep(self: *const ExampleExe, check_step: *std.Build.Step) void {
+    check_step.dependOn(&self.exe_check.step);
 }
 
 /// Adds the examples exe to the build's install target.
