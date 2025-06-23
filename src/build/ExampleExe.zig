@@ -46,9 +46,10 @@ pub fn addRunStep(self: *const ExampleExe) !void {
         run_examples_cmd.addArgs(args);
     }
 
-    const step_name = try std.fmt.allocPrint(b.allocator, "run-example-{s}", .{self.name});
+    const step_name = try std.fmt.allocPrint(b.allocator, "example-{s}", .{self.name});
+    const step_description = try std.fmt.allocPrint(b.allocator, "Run example with name \"{s}\"", .{self.name});
 
-    const run_example_step = b.step(step_name, "Run example with name \"\"");
+    const run_example_step = b.step(step_name, step_description);
     run_example_step.dependOn(&run_examples_cmd.step);
 }
 
