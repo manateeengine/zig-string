@@ -49,6 +49,16 @@ my_string.toCapitalize();
 Full usage documentation is coming very soon, as we're currently cooking up a project that augments
 Zig doc comments and creates beautiful TypeDoc style websites!
 
+## Running Examples
+
+Examples can be found in the `./examples` folder. Each example has its own `zig build` command that
+directly correlates with the name of the directory. For instance, if you'd like to run the example
+in `./examples/basic`, you would run the following command:
+
+```bash
+zig build example-basic
+```
+
 ## Compatibility Matrix
 
 Since this package is designed to bring in the best parts of working with strings in other
