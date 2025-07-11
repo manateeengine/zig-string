@@ -5,9 +5,11 @@
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "files.eol": "\n",
-  "zig.buildOnSave": true,
+  "zig.buildOnSave": false, // Disabled since we're using ZLS's build on save
   "zig.zls.enableBuildOnSave": true,
+  "zig.zls.enableArgumentPlaceholders": false,
   "zig.formattingProvider": "extension",
+  "zig.zls.warnStyle": true,
   "[zig]": {
     "editor.tabSize": 4,
     "editor.formatOnSave": true,
