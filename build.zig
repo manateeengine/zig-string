@@ -20,4 +20,5 @@ pub fn build(b: *std.Build) !void {
     // Check Step
     const check_step = b.step("check", "Check if the project compiles");
     basic_example_exe.addToCheckStep(check_step); // Ensure examples compile
+    tests_exe.addToCheckStep(check_step); // Required since example doesn't touch all code paths
 }

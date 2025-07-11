@@ -67,7 +67,7 @@ pub fn addRunStep(self: *const ExampleExe) !void {
     run_example_step.dependOn(&run_examples_cmd.step);
 }
 
-/// Adds the example's check step as a dependency to the build system's check step
+/// Adds the example to the build's check step
 pub fn addToCheckStep(self: *const ExampleExe, check_step: *std.Build.Step) void {
     check_step.dependOn(&self.exe_check.step);
 }

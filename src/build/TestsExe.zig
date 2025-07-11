@@ -27,8 +27,12 @@ pub fn init(b: *std.Build, config: *const BuildConfig, module: *const ZigStringM
     };
 }
 
+/// Adds the tests to the build's check step
+pub fn addToCheckStep(self: *const TestsExe, check_step: *std.Build.Step) void {
+    check_step.dependOn(&self.exe.step);
+}
+
 /// Adds a build command and step, allowing the exe to be run via "zig build test".
-pub fn addRunStep(self: *const TestsExe) void {
 pub fn addTestStep(self: *const TestsExe) void {
     const b = self.exe.step.owner;
     const run_tests_cmd = b.addRunArtifact(self.exe);
