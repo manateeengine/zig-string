@@ -10,6 +10,7 @@
   "zig.zls.enableArgumentPlaceholders": false,
   "zig.formattingProvider": "extension",
   "zig.zls.warnStyle": true,
+  "zig.buildArgs": ["check"],
   "[zig]": {
     "editor.tabSize": 4,
     "editor.formatOnSave": true,
