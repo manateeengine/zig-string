@@ -29,6 +29,7 @@ pub fn init(b: *std.Build, config: *const BuildConfig, module: *const ZigStringM
 
 /// Adds a build command and step, allowing the exe to be run via "zig build test".
 pub fn addRunStep(self: *const TestsExe) void {
+pub fn addTestStep(self: *const TestsExe) void {
     const b = self.exe.step.owner;
     const run_tests_cmd = b.addRunArtifact(self.exe);
     run_tests_cmd.step.dependOn(b.getInstallStep());

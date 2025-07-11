@@ -12,6 +12,7 @@ pub fn build(b: *std.Build) !void {
     // Tests
     const tests_exe = build_module.TestsExe.init(b, &build_config, &zig_string_module);
     tests_exe.addRunStep();
+    tests_exe.addTestStep();
 
     // Examples
     const basic_example_exe = build_module.ExampleExe.init(b, &build_config, &zig_string_module, "basic");
