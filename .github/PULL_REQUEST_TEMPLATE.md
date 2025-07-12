@@ -9,8 +9,8 @@ Link to GitHub issue:
 Please describe the tests that can be run to verify your changes, as well as reproduction
 instructions if applicable.
 
-- 1. Test step 1
-- 2. Test step 2
+1. Test step 1
+2. Test step 2
 
 # Checklist
 

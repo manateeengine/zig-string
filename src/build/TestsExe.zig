@@ -7,7 +7,7 @@ const ZigStringModule = @import("ZigStringModule.zig");
 const TestsExe = @This();
 
 /// The executable for all zig-string tests.
-exe: *std.Build.Step.Compile,
+tests: *std.Build.Step.Compile,
 
 /// Initializes a new TestsExe struct with the provided BuildConfig and ZigStringModule.
 pub fn init(b: *std.Build, config: *const BuildConfig, module: *const ZigStringModule) TestsExe {
@@ -17,22 +17,27 @@ pub fn init(b: *std.Build, config: *const BuildConfig, module: *const ZigStringM
         .strip = false,
         .target = config.target,
     });
-    const tests_exe = b.addTest(.{
-        .name = "zig-string-tests",
+    const tests = b.addTest(.{
+        .name = "tests",
         .root_module = tests_module,
     });
 
     return TestsExe{
-        .exe = tests_exe,
+        .tests = tests,
     };
 }
 
 /// Adds a build command and step, allowing the exe to be run via "zig build test".
-pub fn addRunStep(self: *const TestsExe) void {
-    const b = self.exe.step.owner;
-    const run_tests_cmd = b.addRunArtifact(self.exe);
-    run_tests_cmd.step.dependOn(b.getInstallStep());
+pub fn addTestStep(self: *const TestsExe) void {
+    const b = self.tests.step.owner;
+    const test_cmd = b.addRunArtifact(self.tests);
+    test_cmd.step.dependOn(b.getInstallStep());
 
-    const run_tests_step = b.step("test", "Run unit tests");
-    run_tests_step.dependOn(&run_tests_cmd.step);
+    const test_step = b.step("test", "Run unit tests");
+    test_step.dependOn(&test_cmd.step);
+}
+
+/// Adds the tests to the build's check step
+pub fn addToCheckStep(self: *const TestsExe, check_step: *std.Build.Step) void {
+    check_step.dependOn(&self.tests.step);
 }
