@@ -5,11 +5,13 @@
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "files.eol": "\n",
-  "zig.buildOnSave": false, // Disabled since we're using ZLS's build on save
+  // Disabled since we're using ZLS's build on save
+  "zig.buildOnSave": false,
   "zig.zls.enableBuildOnSave": true,
   "zig.zls.enableArgumentPlaceholders": false,
   "zig.formattingProvider": "extension",
   "zig.zls.warnStyle": true,
+  // Check step is used intentionally since this module doesn't create an exe
   "zig.buildArgs": ["check"],
   "[zig]": {
     "editor.tabSize": 4,
